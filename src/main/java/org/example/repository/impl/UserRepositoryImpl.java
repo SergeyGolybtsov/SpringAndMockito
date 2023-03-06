@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepositoryImpl implements UserRepository {
-    public static final List<User> user = new ArrayList<>();
+    public final List<User> user = new ArrayList<>();
 
     public UserRepositoryImpl() {
         user.add(new User("Дмитрий"));

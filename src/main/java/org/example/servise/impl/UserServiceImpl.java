@@ -15,9 +15,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkUserExist(User user) {
         User users = userRepository.getUserByName(user.getName());
-        if (users != null) {
-            return true;
-        }else
-            return false;
+        return users != null;
     }
 }
