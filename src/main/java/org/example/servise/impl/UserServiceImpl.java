@@ -2,14 +2,13 @@ package org.example.servise.impl;
 
 import org.example.model.User;
 import org.example.repository.UserRepository;
-import org.example.repository.impl.UserRepositoryImpl;
 import org.example.servise.UserService;
 
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
-    public UserServiceImpl() {
-        this.userRepository = new UserRepositoryImpl();
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override

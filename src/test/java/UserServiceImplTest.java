@@ -8,33 +8,37 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.List;
-import static org.mockito.Mockito.when;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
+
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
     private static final User VALID_USER = new User("Сергей");
     private static final User INVALID_USER = new User("Жук");
-    private static final List<User> user = List.of(VALID_USER, new User("Андрей"));
 
     @Mock
-    UserRepository userRepository;
+    UserRepository userRepositoryMock;
     @InjectMocks
-    UserServiceImpl userService;
+    UserServiceImpl userServiceOut;
 
     @Test
     @DisplayName("Возвращает true если пользователь с именем есть в списке")
     void shouldReturnTrue() {
-        when(userRepository.getAllUser()).thenReturn(user);
-        Assertions.assertEquals(user, userRepository.getAllUser());
-        Assertions.assertTrue(userService.checkUserExist(VALID_USER));
+        when(userRepositoryMock.getUserByName(VALID_USER.getName())).thenReturn(VALID_USER);
+        assertTrue(userServiceOut.checkUserExist(VALID_USER));
+        verify(userRepositoryMock, times(1)).getUserByName(VALID_USER.getName());
     }
 
     @Test
     @DisplayName("Возвращает false если пользователя с именем нет в списке")
     void shouldReturnFalse() {
-        when(userRepository.getAllUser()).thenReturn(user);
-        Assertions.assertEquals(user, userRepository.getAllUser());
-        Assertions.assertFalse(userService.checkUserExist(INVALID_USER));
+        when(userRepositoryMock.getUserByName(INVALID_USER.getName())).thenReturn(null);
+        assertFalse(userServiceOut.checkUserExist(INVALID_USER));
+        verify(userRepositoryMock, times(1)).getUserByName(INVALID_USER.getName());
     }
 }
